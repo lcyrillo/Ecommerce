@@ -9,6 +9,10 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Ecommerce.Infra;
+using Ecommerce.Models;
+using Microsoft.EntityFrameworkCore;
+using Ecommerce.DAO;
 
 namespace Ecommerce
 {
@@ -31,6 +35,11 @@ namespace Ecommerce
                 options.MinimumSameSitePolicy = SameSiteMode.None;
             });
 
+            services.AddDbContext<EcommerceContext>(
+                options => options.UseSqlServer(Configuration.GetConnectionString("Ecommerce"))
+            );
+
+            services.AddTransient<ProductDao>();
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
